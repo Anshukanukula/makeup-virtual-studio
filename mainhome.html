@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shristi</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: black;
+            height: 70px; /* Adjusted height to match the logo and profile picture */
+        }
+        .navbar .logo-name {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .logo img {
+            height: 50px; /* Same height for the Shristi logo */
+            border-radius: 50%;
+        }
+        .navbar h1 {
+            margin-left: 10px;
+            color: #800080;
+            font-size: 24px;
+        }
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .navbar .nav-links img {
+            height: 50px; /* Same height as the Shristi logo */
+            border-radius: 50%; /* Circular shape for the profile image */
+        }
+        .navbar .nav-links a {
+            color: #800080;
+            font-size:20px;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .navbar .nav-links a:hover {
+            background-color: #777;
+        }
+        .content-box {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }
+        .content-box img {
+            width: 50%;
+            border-radius: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .content-box .description {
+            padding: 100px;
+            border-radius: 20px;
+            margin: 20px;
+        }
+        .content-box:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .content-box .description h1 {
+            color: #800080;
+            font-size: 40px;
+        }
+        .content-box .description h3, .content-box .description p {
+            color: black;
+            font-size: 24px;
+        }
+        .content-box .description p {
+            font-size: 30px;
+        }
+        /* Features Section */
+        .features-section {
+            text-align: center;
+            padding: 50px;
+            background-color: #F8F8F8;
+        }
+        .features-section h2 {
+            color: #800080;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+        .feature-boxes {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+        }
+        .feature-box {
+            width: 30%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+        .feature-box img {
+            margin-bottom: 15px;
+            width: 100%;
+            border-radius: 10px;
+        }
+        .feature-box a {
+            text-decoration: none;
+            color: #800080;
+            font-size: 18px;
+        }
+        .feature-box:hover {
+            transform: scale(1.05);
+        }
+
+        /* Performance Section */
+        .performance-section {
+            text-align: center;
+            padding: 50px;
+            background-color: #F8F8F8;
+        }
+        .performance-section h2 {
+            color: #800080;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+        .performance-rounds {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+        }
+        .performance-round {
+            width: 30%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+        .performance-round:hover {
+            transform: scale(1.05);
+        }
+        .performance-round img {
+            width: 100%;
+            border-radius: 50%;
+        }
+         /* Footer Section (New Contact Section) */
+        .footer {
+            background-color: #333;
+            color: white;
+        padding: 40px 20px;
+        }
+        .footer .footer-container {
+            display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.footer .footer-column {
+    flex: 1;
+    min-width: 150px;
+    margin: 10px;
+}
+.footer .footer-column h4 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+.footer .footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+.footer .footer-column ul li {
+    margin-bottom: 10px;
+}
+.footer .footer-column ul li a {
+    color: white;
+    text-decoration: none;
+}
+.footer .footer-column ul li a:hover {
+    text-decoration: underline;
+}
+.footer .subscribe-box input {
+    padding: 10px;
+    width: 70%;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.footer .subscribe-box button {
+    padding: 10px;
+    background-color: #800080;
+    border: none;
+    border-radius: 5px;
+    color: white;
+}
+.footer .social-icons a {
+    color: white;
+    margin-right: 10px;
+}
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo-name">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/srishti_logo1.png') }}" alt="Logo">
+            </div>
+            <h1>Shristi-Design your look</h1>
+        </div>
+        <div class="nav-links">
+            <!-- Profile Image Link -->
+            <a href="{{ url_for('profile') }}">
+                <img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Profile">
+            </a>
+            <!-- Logout Link -->
+            <a href="{{ url_for('home') }}">Logout</a>
+        </div>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="content-box">
+        <img src="{{ url_for('static', filename='images/img6.jpg') }}" alt="Feature 1 Image" width="600" height="600">
+        <div class="description">
+            <h1>Try IT-ON!</h1>
+            <h3>Time to makeup your mind!</h3>
+            <h3>Experience your perfect makeup shades or try a bold new look with Shristi’s virtual try-on tool.</h3>
+        </div>
+    </div>
+    
+    <div class="content-box">
+        <img src="{{ url_for('static', filename='images/img2.jpg') }}" alt="Feature 2 Image">
+        <div class="description">
+            <h1>About Shristi</h1>
+            <h3>Shristi allows you to try on different makeup products and looks virtually, without having to actually apply the makeup on your face.</h3>
+        </div>
+    </div>
+
+    <div class="content-box">
+        <img src="{{ url_for('static', filename='images/img4.jpeg') }}" alt="Feature 3 Image">
+        <div class="description">
+            <h1>Services We Provide</h1>
+            <ul>
+                <li><h3>Virtual Try-Ons</h3></li>
+                <li><h3>Makeup Tutorials</h3></li>
+                <li><h3>Skin Analysis</h3></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+        <h2>Features</h2>
+        <div class="feature-boxes">
+            <div class="feature-box">
+                <img src="{{ url_for('static', filename='images/tutorial.jpg') }}" alt="Virtual Try-On" />
+                <a href="{{ url_for('virtual_tryon') }}">Virtual Try-Ons</a>
+            </div>
+            <div class="feature-box">
+                <img src="{{ url_for('static', filename='images/virtual_try_on.jpg') }}" alt="Makeup Tutorials" />
+                <a href="{{ url_for('makeup_tutorials') }}">Makeup Tutorials</a>
+            </div>
+            <div class="feature-box alternate-feature">
+                <img src="{{ url_for('static', filename='images/tryon.jpg') }}" alt="Skin Analysis" />
+                <a href="{{ url_for('skin_products') }}">Skin Analysis</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Section -->
+    <div class="performance-section">
+        <h2>Performances</h2>
+        <div class="performance-rounds">
+            <div class="performance-round">
+                <a href="#"><img src="{{ url_for('static', filename='images/first.jpg') }}" alt="Performance 1"></a>
+            </div>
+            <div class="performance-round">
+                <a href="#"><img src="{{ url_for('static', filename='images/mid.webp') }}" alt="Performance 2"></a>
+            </div>
+            <div class="performance-round">
+                <a href="#"><img src="{{ url_for('static', filename='images/last.jpeg') }}" alt="Performance 3"></a>
+            </div>
+        </div>
+    </div>
+    <!-- Footer Section -->
+<div class="footer">
+    <div class="footer-container">
+        <div class="footer-column">
+            <h4>About</h4>
+            <ul>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Press & News</a></li>
+                <li><a href="#">Partnerships</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Categories</h4>
+            <ul>
+                <li><a href="#">Makeup</a></li>
+                <li><a href="#">Skincare</a></li>
+                <li><a href="#">Haircare</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="#">Help Center</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-column subscribe-box">
+            <h4>Subscribe</h4>
+            <input type="email" placeholder="Your email address" />
+            <button>Send</button>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Shristi. All rights reserved.</p>
+    </div>
+</div>
+
+</body>
+</html>

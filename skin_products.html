@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Care Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8f8f8;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        .logo h1 {
+            margin-left: 10px;
+            color: #800080;
+            font-size: 24px;
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: #800080;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px;
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+        .main-nav a:hover {
+            color: #fff;
+            color: #800080;
+            border-radius: 5px;
+        }
+        .main-image {
+            width: 100%;
+            height: 550px;
+            background: url('{{ url_for('static', filename='images/skin care back.webp') }}') no-repeat center center;
+            background-size: cover;
+            position: relative;
+        }
+
+        /* Main links positioned on top of the image */
+        .main-links {
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            bottom: 20px; /* Position from bottom */
+            width: 100%;
+        }
+        .main-links a {
+            text-decoration: none;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            font-size: 18px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            cursor: pointer; /* Change cursor on hover */
+        }
+        .main-links a:hover {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+        .product-section {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .category-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .category-heading {
+            width: 150px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #f2f2f2;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 2px solid #ccc;
+            margin-right: 20px;
+        }
+        .products-wrapper {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .product {
+            display: inline-block;
+            text-align: center;
+            width: 200px;
+            margin-right: 20px;
+        }
+        .product img {
+            width: 200px;
+            height: 300px;
+            margin-bottom: 10px;
+        }
+        .product p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .product button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+        }
+        .feedback {
+            background-color: #f2f2f2;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+        .feedback textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .feedback button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/srishti_logo1.png') }}" alt="Logo">
+        <h1>Shristi-facial Skin Care Products</h1>
+    </div>
+    <div class="main-nav">
+        <a href="{{ url_for('mainhome') }}">Back to Main Home</a>
+    </div>
+</header>
+
+<div class="main-image">
+    <!-- Main background image -->
+    <div class="main-links">
+        <a href="{{ url_for('skin_products') }}">Skin Products</a>
+        <a href="{{ url_for('body_products') }}">Body Products</a>
+        <a href="{{ url_for('cart') }}">Cart</a>
+    </div>
+</div>
+
+<!-- Product Sections with Horizontal Scrolling -->
+<div class="product-section">
+    <!-- Cleanse Products -->
+    <div class="category-row">
+        <div class="category-heading">Cleanse</div>
+        <div class="products-wrapper">
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/cleanse1.jpeg') }}" alt="Cleanser 1">
+                <p>Cleanser 1 - $10.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="1">
+                    <input type="hidden" name="product_name" value="Cleanser 1">
+                    <input type="hidden" name="product_cost" value="10.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="cleanse1.jpeg">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/cleanse2.jpg') }}" alt="Cleanser 2">
+                <p>Cleanser 2 - $12.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="2">
+                    <input type="hidden" name="product_name" value="Cleanser 2">
+                    <input type="hidden" name="product_cost" value="12.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="cleanse2.jpg">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/cleanse3.jpeg') }}" alt="Cleanser 3">
+                <p>Cleanser 3 - $15.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="3">
+                    <input type="hidden" name="product_name" value="Cleanser 3">
+                    <input type="hidden" name="product_cost" value="15.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="cleanse3.jpeg">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/cleanse3.jpeg') }}" alt="Cleanser 3">
+                <p>Cleanser 3 - $15.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="3">
+                    <input type="hidden" name="product_name" value="Cleanser 3">
+                    <input type="hidden" name="product_cost" value="15.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="cleanse3.jpeg">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Beauty Products -->
+    <div class="category-row">
+        <div class="category-heading">face wash</div>
+        <div class="products-wrapper">
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/facewash1.webp') }}" alt="facewash1">
+                <p>face wash 1 - $15.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="4">
+                    <input type="hidden" name="product_name" value="Beauty Product 1">
+                    <input type="hidden" name="product_cost" value="15.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="facewash1.webp">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/facewash2.jpg') }}" alt="facewash 2">
+                <p>face wash 2 - $18.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="5">
+                    <input type="hidden" name="product_name" value="Beauty Product 2">
+                    <input type="hidden" name="product_cost" value="18.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="facewash2.jpg">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/facewash3.jpg') }}" alt="facewash 3">
+                <p>facewash 3 - $20.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="6">
+                    <input type="hidden" name="product_name" value="Beauty Product 3">
+                    <input type="hidden" name="product_cost" value="20.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="facewash3.jpg">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="category-row">
+        <div class="category-heading">Sun Screen </div>
+        <div class="products-wrapper">
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/sunscreen1.webp') }}" alt="sunscreen1">
+                <p>sunscreen1 - $15.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="4">
+                    <input type="hidden" name="product_name" value="Beauty Product 1">
+                    <input type="hidden" name="product_cost" value="15.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="sunscreen1.webp">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/sunscreen2.jpg') }}" alt="sunscreen 2">
+                <p>sunscreen 2 - $18.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="5">
+                    <input type="hidden" name="product_name" value="Beauty Product 2">
+                    <input type="hidden" name="product_cost" value="18.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="sunscreen2.jpeg">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/sunscreen3.webp') }}" alt="sunscreen 3">
+                <p>sunscreen 3 - $20.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="6">
+                    <input type="hidden" name="product_name" value="Beauty Product 3">
+                    <input type="hidden" name="product_cost" value="20.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="sunscreen3.webp">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="category-row">
+        <div class="category-heading">Moisturizer </div>
+        <div class="products-wrapper">
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/moist1.jpg') }}" alt="moist1">
+                <p>moisturizer 1- $15.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="4">
+                    <input type="hidden" name="product_name" value="moist1">
+                    <input type="hidden" name="product_cost" value="15.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="moist1.jpg">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/moist2.jpg') }}" alt="moist 2">
+                <p>moisturizer 2 - $18.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="5">
+                    <input type="hidden" name="product_name" value="moist 2">
+                    <input type="hidden" name="product_cost" value="18.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="moist2.jpg">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/moist3.jpeg') }}" alt="moist 3">
+                <p>moist 3 - $20.00</p>
+                <form action="{{ url_for('add_to_cart_route') }}" method="post">
+                    <input type="hidden" name="product_id" value="6">
+                    <input type="hidden" name="product_name" value="moist 3">
+                    <input type="hidden" name="product_cost" value="20.00">
+                    <input type="hidden" name="product_type" value="skin">
+                    <input type="hidden" name="product_picture" value="moist3.jpeg">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Feedback Section -->
+    <div class="feedback">
+        <h2>Leave Your Feedback</h2>
+        <form method="post" action="{{ url_for('submit_feedback') }}">
+            <textarea name="feedback" placeholder="Your feedback..."></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

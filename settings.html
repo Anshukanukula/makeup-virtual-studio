@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Shristi</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #C0C0C0;
+            color: white;
+        }
+        .header img {
+            height: 40px;
+        }
+        .header .logo h1 {
+            color: #6a006a;
+            margin-left: 10px;
+            font-size: 24px;
+        }
+        .header a {
+            background-color: #fff;
+            color: #800080;
+            font-size:20px;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .header a:hover {
+            background-color: #f4f4f9;
+            color: #6a006a;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group input[type="checkbox"], .form-group input[type="radio"] {
+            width: auto;
+        }
+        .form-actions {
+            text-align: right;
+        }
+        .form-actions button {
+            background-color: #800080;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-actions button:hover {
+            background-color: #6a006a;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/srishti_logo1.png') }}" alt="Logo">
+            <h1>Shristi</h1>
+        </div>
+        <a href="{{ url_for('profile') }}">Cancel</a>
+    </div>
+
+    <div class="container">
+        <h1>Update Profile</h1>
+
+        <h2>Personal Details</h2>
+        <form action="{{ url_for('settings') }}" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="{{ user[2] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user[1] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" value="{{ user[3] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" value="{{ user[4] }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <label><input type="radio" name="gender" value="Male" {% if user[6] == 'Male' %}checked{% endif %}> Male</label>
+                <label><input type="radio" name="gender" value="Female" {% if user[6] == 'Female' %}checked{% endif %}> Female</label>
+                <label><input type="radio" name="gender" value="Other" {% if user[6] == 'Other' %}checked{% endif %}> Other</label>
+            </div>
+            <div class="form-group">
+                <label for="marital_status">Marital Status:</label>
+                <label><input type="radio" name="marital_status" value="Single" {% if user[7] == 'Single' %}checked{% endif %}> Single</label>
+                <label><input type="radio" name="marital_status" value="Married" {% if user[7] == 'Married' %}checked{% endif %}> Married</label>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" value="{{ user[5] }}" required>
+            </div>
+
+            <h2>Skin Analysis</h2>
+            <div class="form-group">
+                <label for="skin_color">Skin Color:</label>
+                <select id="skin_color" name="skin_color" required>
+                    <option value="Black" {% if user[8] == 'Black' %}selected{% endif %}>Black</option>
+                    <option value="White" {% if user[8] == 'White' %}selected{% endif %}>White</option>
+                    <option value="Brown" {% if user[8] == 'Brown' %}selected{% endif %}>Brown</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="skin_type">Skin Type:</label>
+                <select id="skin_type" name="skin_type" required>
+                    <option value="Oily" {% if user[9] == 'Oily' %}selected{% endif %}>Oily</option>
+                    <option value="Dry" {% if user[9] == 'Dry' %}selected{% endif %}>Dry</option>
+                    <option value="Combination" {% if user[9] == 'Combination' %}selected{% endif %}>Combination</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Skin Allergies:</label>
+                <label><input type="checkbox" name="skin_allergies" value="Pimples" {% if 'Pimples' in user[10] %}checked{% endif %}> Pimples</label>
+                <label><input type="checkbox" name="skin_allergies" value="Acne" {% if 'Acne' in user[10] %}checked{% endif %}> Acne</label>
+                <label><input type="checkbox" name="skin_allergies" value="Rosacea" {% if 'Rosacea' in user[10] %}checked{% endif %}> Rosacea</label>
+                <label><input type="checkbox" name="skin_allergies" value="Eczema" {% if 'Eczema' in user[10] %}checked{% endif %}> Eczema</label>
+            </div>
+
+            <h2>Feedback</h2>
+            <div class="form-group">
+                <label for="feedback">Feedback:</label>
+                <textarea id="feedback" name="feedback">{{ user[11] }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="rating">Rating:</label>
+                <input type="number" id="rating" name="rating" min="1" max="5">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

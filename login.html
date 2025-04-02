@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Syra</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F8F8FF;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            width: 350px; /* Reduced size */
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 120px; /* Adjust logo size */
+            border-radius: 10px;
+        }
+        label {
+            font-size: 16px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #800080;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #5a005a;
+        }
+        .links {
+            margin-top: 20px;
+        }
+        .links a {
+            color: #800080;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/srishti_logo1.png') }}" alt="Logo">
+        </div>
+        <h2>Login</h2>
+        <form action="{{ url_for('login') }}" method="POST">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <label for="confirm_password">Confirm Password:</label> <!-- Corrected field name -->
+            <input type="password" id="confirm_password" name="confirm_password" required>
+            <input type="submit" value="Verify Account">
+        </form>
+    </div>
+</body>
+</html>

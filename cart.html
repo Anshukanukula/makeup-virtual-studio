@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #C0C0C0;
+            height: 70px; /* Adjusted height to match the logo and profile picture */
+        }
+        .navbar .logo-name {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .logo img {
+            height: 50px; /* Same height for the Shristi logo */
+            border-radius: 50%;
+        }
+        .navbar h1 {
+            margin-left: 10px;
+            color: #800080;
+            font-size: 24px;
+        }
+        
+        h1 {
+            color: #800080;
+            text-align: center;
+            margin: 20px 0;
+        }
+        h2 {
+            color: #800080;
+            text-align: center;
+            margin: 20px 0;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        li img {
+            width: 150px;
+            height: 150px;
+            margin-right: 20px;
+        }
+        li p {
+            font-size: 18px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color:  #800080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto; /* Center the button */
+        }
+        button:hover {
+            background-color:  #800080;
+        }
+        .no-products {
+            text-align: center;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+<div class="navbar">
+    <div class="logo-name">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/srishti_logo1.png') }}" alt="Logo">
+        </div>
+        <h1>Shristi-Design your look</h1>
+    </div>
+    <h1 >Your Cart</h1>
+</div>
+    
+    <h2>Skin Products</h2>
+    <ul>
+        {% if skin_cart %}
+            {% for item in skin_cart %}
+            <li>
+                <img src="{{ url_for('static', filename='images/' + (item['product_picture'] if item['product_picture'] else 'default_image.png')) }}" alt="{{ item['product_name'] }}">
+                <p>{{ item['product_name'] }} - ${{ item['product_cost'] }}</p>
+            </li>
+            {% endfor %}
+        {% else %}
+            <li class="no-products">No skin products in cart.</li>
+        {% endif %}
+    </ul>
+
+    <h2>Body Products</h2>
+    <ul>
+        {% if body_cart %}
+            {% for item in body_cart %}
+            <li>
+                <img src="{{ url_for('static', filename='images/' + (item['product_picture'] if item['product_picture'] else 'default_image.png')) }}" alt="{{ item['product_name'] }}">
+                <p>{{ item['product_name'] }} - ${{ item['product_cost'] }}</p>
+            </li>
+            {% endfor %}
+        {% else %}
+            <li class="no-products">No body products in cart.</li>
+        {% endif %}
+    </ul>
+    
+    <form action="{{ url_for('payment_page') }}" method="GET">
+        <button type="submit">Pay Now</button>
+    </form>
+    
+</body>
+</html>

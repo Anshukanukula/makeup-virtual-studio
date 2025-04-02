@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Try-On</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #C0C0C0;
+            height: 70px;
+        }
+        .logo-name {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 50px;
+            border-radius: 50%;
+        }
+        .header h1 {
+            margin-left: 10px;
+            color: #800080;
+            font-size: 24px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .nav-links a {
+            color: #800080;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .nav-links a:hover {
+            background-color: #777;
+        }
+        .instructions {
+            padding: 20px;
+            font-size: 16px;
+            color: #800080;
+            background-color: #fff;
+            border-radius: 5px;
+            margin: 20px;
+        }
+        .main-container {
+            display: flex;
+            height: calc(100vh - 200px);
+            padding: 20px;
+        }
+        .video-container {
+            flex: 1;
+            position: relative;
+            padding-right: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .video-container video, canvas {
+            width: 80%;
+            max-width: 600px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            background-color: #fff;
+        }
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        .controls button {
+            background-color: #800080;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .controls button:hover {
+            background-color: #5a005a;
+        }
+        .sidebar {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar h2 {
+            color: #800080;
+            margin-bottom: 15px;
+        }
+        .sidebar select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #5a005a;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-name">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/srishti_logo1.png') }}" alt="Logo">
+            </div>
+            <h1>Shristi - Design Your Look</h1>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('mainhome') }}">Cancel</a>
+        </div>
+    </div>
+    <div class="instructions">
+        <h3>Follow these simple steps to use the Virtual Try-On tool:</h3>
+        <ol>
+            <li>Select a makeup product from the dropdown menus.</li>
+            <li>Click "Apply Makeup" to see the result on the video feed.</li>
+            <li>Enjoy your virtual makeover!</li>
+        </ol>
+    </div>
+    <div class="main-container">
+        <div class="video-container">
+            <video id="video" autoplay></video>
+            <canvas id="canvas"></canvas>
+            <div class="controls">
+                <button id="playPauseButton" onclick="togglePlayPause()">Pause</button>
+            </div>
+        </div>
+        <div class="sidebar">
+            <h2>Makeup Product Selection</h2>
+            <div>
+                <h3>Lipstick</h3>
+                <select id="lipstick-color">
+                    <option value="Red">Red</option>
+                    <option value="Pink">Pink</option>
+                    <option value="Purple">Purple</option>
+                </select>
+            </div>
+            <div>
+                <h3>Eyeliner</h3>
+                <select id="eyeliner-color">
+                    <option value="Black">Black</option>
+                    <option value="Dark Blue">Dark Blue</option>
+                    <option value="Green">Green</option>
+                </select>
+            </div>
+            <div>
+                <h3>Eyeshadow</h3>
+                <select id="eyeshadow-color">
+                    <option value="violet">Violet</option>
+                    <option value="skyblue">Sky Blue</option>
+                    <option value="Brown">Brown</option>
+                </select>
+            </div>
+            <div>
+                <h3>Eyebrow</h3>
+                <select id="eyebrow-color">
+                    <option value="Dark Brown">Dark Brown</option>
+                    <option value="Black">Black</option>
+                    <option value="Light Brown">Light Brown</option>
+                </select>
+            </div>
+            <button id="apply-makeup">Apply Makeup</button>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function startVideoStream() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    video.srcObject = stream;
+                    video.play();
+                    console.log("Video stream started successfully.");
+                })
+                .catch((err) => {
+                    console.error("Error accessing webcam: ", err);
+                });
+        }
+
+        function togglePlayPause() {
+            if (video.paused) {
+                video.play();
+                document.getElementById('playPauseButton').textContent = 'Pause';
+            } else {
+                video.pause();
+                document.getElementById('playPauseButton').textContent = 'Play';
+            }
+        }
+
+        document.getElementById('apply-makeup').addEventListener('click', () => {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/png');
+
+            const lipstickColor = document.getElementById('lipstick-color').value;
+            const eyelinerColor = document.getElementById('eyeliner-color').value;
+            const eyeshadowColor = document.getElementById('eyeshadow-color').value;
+            const eyebrowColor = document.getElementById('eyebrow-color').value;
+
+            const makeupData = {
+                image: imageData,
+                lipstick: lipstickColor,
+                eyeliner: eyelinerColor,
+                eyeshadow: eyeshadowColor,
+                eyebrow: eyebrowColor
+            };
+
+            fetch('/apply_makeup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(makeupData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                const img = new Image();
+                img.src = data.image;
+                img.onload = () => {
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                };
+            })
+            .catch((error) => {
+                console.error("Error applying makeup: ", error);
+            });
+        });
+
+        startVideoStream();
+    </script>
+</body>
+</html>

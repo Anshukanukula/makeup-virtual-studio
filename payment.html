@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #C0C0C0;
+            height: 70px;
+        }
+        .navbar .logo-name {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .logo img {
+            height: 50px;
+            border-radius: 50%;
+        }
+        .navbar h1 {
+            margin-left: 10px;
+            color: #800080;
+            font-size: 24px;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .products-container, .payment-container {
+            width: 45%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #800080;
+            text-align: center;
+        }
+        .product-box {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+            padding: 15px;
+            margin: 10px 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .product-box img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .remove-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding: 3px 7px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .address-box {
+            display: none;
+            margin-top: 10px;
+        }
+        .submit-button {
+            padding: 5px 10px;
+            background-color: #800080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-button:hover {
+            background-color: #6a006a;
+        }
+        .blink {
+            animation: blink-animation 1s steps(5, start) infinite;
+        }
+        @keyframes blink-animation {
+            to {
+                visibility: hidden;
+            }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+            position: relative;
+            border-radius: 5px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .bill-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        .bill-display {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        .order-notification {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function removeProduct(element) {
+            const productItem = element.parentNode;
+            const productCost = parseFloat(productItem.getAttribute("data-cost"));
+            const totalCostElement = document.getElementById("total-cost");
+            const currentTotal = parseFloat(totalCostElement.innerText.replace('Total: $', ''));
+            const newTotal = currentTotal - productCost;
+
+            totalCostElement.innerText = 'Total: $' + newTotal.toFixed(2);
+            productItem.remove();
+        }
+
+        function toggleAddressInput(paymentMethod) {
+            const addressBox = document.getElementById("address-box");
+            addressBox.style.display = paymentMethod === "cash" ? "block" : "none";
+        }
+
+        function submitAddress() {
+            const address = document.getElementById("address").value;
+            const addressDisplay = document.getElementById("address-display");
+
+            if (address) {
+                addressDisplay.innerText = address;
+                addressDisplay.classList.add('blink');
+
+                setTimeout(() => {
+                    addressDisplay.classList.remove('blink');
+                    document.getElementById("address-box").style.display = "none";
+                    document.getElementById("address").value = ''; // Clear address input
+                }, 3000); // Blink effect lasts for 3 seconds
+            }
+        }
+
+        function processPayment() {
+            const productItems = document.querySelectorAll('.product-box');
+            const billContent = document.getElementById('bill-content');
+            const totalCostElement = document.getElementById("total-cost");
+            const totalCost = totalCostElement.innerText;
+            const addressDisplay = document.getElementById("address-display").innerText;
+
+            billContent.innerHTML = ""; // Clear previous bill content
+
+            productItems.forEach(item => {
+                const productName = item.querySelector('div').innerText;
+                const productCost = item.getAttribute("data-cost");
+                billContent.innerHTML += `<div class="bill-item">${productName} <span>$${productCost}</span></div>`;
+            });
+
+            billContent.innerHTML += `<div class="bill-item" style="font-weight: bold;">Total: <span>${totalCost}</span></div>`;
+            billContent.innerHTML += `<div class="bill-item">Address: <span>${addressDisplay}</span></div>`;
+
+            const modal = document.getElementById("billModal");
+            modal.style.display = "block"; // Show the modal
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("billModal");
+            modal.style.display = "none"; // Hide the modal
+        }
+
+        function showBill() {
+            const billDisplay = document.createElement('div');
+            billDisplay.className = 'bill-display';
+            billDisplay.innerHTML = `<h2>Your Bill:</h2><div id="bill-content">${document.getElementById('bill-content').innerHTML}</div>`;
+
+            const paymentContainer = document.querySelector('.payment-container');
+            paymentContainer.appendChild(billDisplay);
+
+            const orderNotification = document.createElement('div');
+            orderNotification.className = 'order-notification';
+            orderNotification.innerText = 'Order Successfully Placed! Thank you for your purchase.';
+
+            paymentContainer.appendChild(orderNotification);
+
+            closeModal(); // Close the modal after showing the bill
+        }
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo-name">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/srishti_logo1.png') }}" alt="Logo">
+            </div>
+            <h1>Shristi - Design your look</h1>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="products-container">
+            <h2>Products in Cart</h2>
+            <div id="products">
+                {% for item in skin_cart %}
+                    <div class="product-box" data-cost="{{ item.product_cost }}">
+                        <img src="{{ url_for('static', filename='images/' + (item.product_picture if item.product_picture else 'default_image.png')) }}" alt="{{ item.product_name }}">
+                        <div>{{ item.product_name }} - ${{ item.product_cost }}</div>
+                        <button class="remove-button" onclick="removeProduct(this)">Remove</button>
+                    </div>
+                {% endfor %}
+                {% for item in body_cart %}
+                    <div class="product-box" data-cost="{{ item.product_cost }}">
+                        <img src="{{ url_for('static', filename='images/' + (item.product_picture if item.product_picture else 'default_image.png')) }}" alt="{{ item.product_name }}">
+                        <div>{{ item.product_name }} - ${{ item.product_cost }}</div>
+                        <button class="remove-button" onclick="removeProduct(this)">Remove</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="total" id="total-cost">Total: ${{ total_cost }}</div>
+        </div>
+        <div class="payment-container">
+            <h2>Select Payment Method</h2>
+            <label>
+                <input type="radio" name="payment" value="credit-card" onclick="toggleAddressInput('credit-card')"> Credit Card
+            </label>
+            <label>
+                <input type="radio" name="payment" value="cash" onclick="toggleAddressInput('cash')"> Cash on Delivery
+            </label>
+            <div class="address-box" id="address-box">
+                <h3>Enter your address:</h3>
+                <input type="text" id="address">
+                <button onclick="submitAddress()">Submit Address</button>
+                <div id="address-display" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+            <button class="submit-button" onclick="processPayment()">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <div id="billModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="bill-content"></div>
+            <button onclick="showBill()">Confirm Payment</button>
+        </div>
+    </div>
+</body>
+</html>

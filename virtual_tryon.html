@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makeup Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f2f2f2;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            height: 90%;
+        }
+        .left-panel, .right-panel {
+            height: 100%;
+        }
+        .left-panel {
+            width: 30%;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .right-panel {
+            width: 65%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .makeup-options {
+            margin-bottom: 20px;
+        }
+        .makeup-options label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Panel (Makeup Options) -->
+        <div class="left-panel">
+            <h2>Choose Makeup</h2>
+            <div class="makeup-options">
+                <label for="lip-color">Lip Color:</label>
+                <input type="color" id="lip-color" name="lip-color" value="#FF0000">
+            </div>
+            <div class="makeup-options">
+                <label for="eyeliner-color">Eyeliner Color:</label>
+                <input type="color" id="eyeliner-color" name="eyeliner-color" value="#8B0000">
+            </div>
+            <div class="makeup-options">
+                <label for="eyeshadow-color">Eyeshadow Color:</label>
+                <input type="color" id="eyeshadow-color" name="eyeshadow-color" value="#006400">
+            </div>
+            <button id="apply-makeup">Apply Makeup</button>
+        </div>
+
+        <!-- Right Panel (Video Feed) -->
+        <div class="right-panel">
+            <img src="{{ url_for('video_feed') }}" alt="Video Stream">
+        </div>
+    </div>
+
+    <p>Press <b>Q</b> on your keyboard to quit.</p>
+
+    <script>
+        document.getElementById('apply-makeup').addEventListener('click', function() {
+            const lipColor = document.getElementById('lip-color').value;
+            const eyelinerColor = document.getElementById('eyeliner-color').value;
+            const eyeshadowColor = document.getElementById('eyeshadow-color').value;
+
+            // Send the colors to the server (using JavaScript)
+            fetch('/apply_makeup', {
+                method: 'POST',
+                body: JSON.stringify({
+                    lipColor: lipColor,
+                    eyelinerColor: eyelinerColor,
+                    eyeshadowColor: eyeshadowColor
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        });
+    </script>
+</body>
+</html>
